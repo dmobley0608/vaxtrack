@@ -4,15 +4,15 @@ from . import views
 
 router = DefaultRouter()
 router.register(r'animals', views.AnimalViewSet)
-router.register(r'measurements', views.AnimalMeasurementViewSet)
-# router.register(r'vaccinations', views.VaccinationViewSet)
-router.register(r'details', views.AnimalDetailViewSet)
 
-vaccine_router = DefaultRouter()
-vaccine_router.register(r'vaccinations', views.VaccinationViewSet)
+
+sub_router = DefaultRouter()
+sub_router.register(r'vaccinations', views.VaccinationViewSet)
+sub_router.register(r'measurements', views.AnimalMeasurementViewSet)
+sub_router.register(r'details', views.AnimalDetailViewSet)
 app_name = 'animal'
 
 urlpatterns = [
     path('', include(router.urls)),
-    path('<int:animal_id>/', include(vaccine_router.urls))
+    path('<int:animal_id>/', include(sub_router.urls))
 ]

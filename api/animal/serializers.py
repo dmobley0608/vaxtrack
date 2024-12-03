@@ -8,7 +8,7 @@ from .models import Animal, AnimalMeasurement, Vaccination, AnimalDetail
 class AnimalMeasurementSerializer(serializers.ModelSerializer):
     class Meta:
         model = AnimalMeasurement
-        fields = '__all__'
+        fields = ['date', 'weight', 'height']
 
 class VaccinationSerializer(serializers.ModelSerializer):
     class Meta:
