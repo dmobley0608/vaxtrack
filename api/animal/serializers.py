@@ -18,7 +18,7 @@ class VaccinationSerializer(serializers.ModelSerializer):
 class AnimalDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = AnimalDetail
-        fields = '__all__'
+        fields = ['name', 'value', 'date_recorded']
 
 class AnimalSerializer(serializers.ModelSerializer):
     details = AnimalDetailSerializer(many=True, required=False)

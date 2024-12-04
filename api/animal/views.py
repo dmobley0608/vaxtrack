@@ -76,3 +76,27 @@ class VaccinationViewSet(viewsets.ModelViewSet):
 class AnimalDetailViewSet(viewsets.ModelViewSet):
     queryset = AnimalDetail.objects.all()
     serializer_class = AnimalDetailSerializer
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+    
+    def get_queryset(self):
+        user = self.request.user
+        if user.is_authenticated:
+            animal = get_object_or_404(Animal, id = self.kwargs['animal_id'])
+            if animal.owner == user:
+                return self.queryset.filter(animal=animal).order_by('name', '-date_recorded')
+            else:
+                raise PermissionDenied('You are not allowed to access this animal.')
+        else:
+            raise PermissionDenied("You must be logged in to utilize this feature.")
+
+    def perform_create(self, serializer):
+        user = self.request.user
+        if user.is_authenticated:
+            animal = get_object_or_404(Animal, id = self.kwargs['animal_id'])
+            if animal.owner == user:
+               serializer.save(animal=animal)
+            else:
+                raise PermissionDenied('You are not allowed to access this animal.')
+        else:
+            raise PermissionDenied("You must be logged in to utilize this feature.")
